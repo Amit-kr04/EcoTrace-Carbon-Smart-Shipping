@@ -1,0 +1,17 @@
+fastapi==0.128.8
+uvicorn[standard]==0.39.0
+pandas==2.3.3
+numpy==2.0.2
+scipy==1.13.1
+scikit-learn==1.6.1
+xgboost==2.1.4
+statsmodels==0.14.6
+PuLP==3.3.1
+joblib==1.5.3
+pymongo==4.18.3
+python-dotenv==1.2.1
+pydantic==2.13.5
+shap==0.49.1
+# Optional: better forecasting with Indian holidays. If it fails to install
+# (common on Windows) EcoTrace automatically uses statsmodels SARIMA instead.
+# prophet>=1.1

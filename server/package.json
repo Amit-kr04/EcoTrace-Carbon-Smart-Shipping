@@ -1,0 +1,30 @@
+{
+  "name": "ecotrace-server",
+  "version": "1.0.0",
+  "description": "EcoTrace REST API: auth, vendors, shipments, CO2 analytics, alerts, reports",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "seed": "node src/seedCli.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "multer": "^2.0.2",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.16",
+    "pdfkit": "^0.15.2",
+    "socket.io": "^4.8.1"
+  },
+  "optionalDependencies": {
+    "mongodb-memory-server": "^10.1.3"
+  }
+}

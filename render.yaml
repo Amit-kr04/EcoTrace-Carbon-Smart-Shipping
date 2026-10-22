@@ -1,0 +1,50 @@
+# Render Blueprint: creates the two EcoTrace services from this repository.
+# Render dashboard → New → Blueprint → pick this repo. You will be asked for
+# MONGO_URI (MongoDB Atlas) and ML_URL (the ML service's https URL).
+services:
+  # Node/Express API. Also builds and serves the React website, so the whole
+  # site (pages, /api and Socket.io) lives on one URL.
+  - type: web
+    name: ecotrace-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: cd ../client && npm ci --include=dev && npm run build && cd ../server && npm ci --omit=optional
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
+      - key: MONGOMS_DISABLE_POSTINSTALL
+        value: "1"
+      - key: MONGO_URI
+        sync: false
+      - key: ML_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ML_API_KEY
+        generateValue: true
+      - key: SEED_DEMO
+        value: "true"
+      - key: ORS_API_KEY
+        sync: false
+
+  # Python FastAPI ML service, called only by the API.
+  - type: web
+    name: ecotrace-ml
+    runtime: python
+    plan: free
+    rootDir: ml
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: MONGO_URI
+        sync: false
+      - key: ML_API_KEY
+        fromService:
+          type: web
+          name: ecotrace-api
+          envVarKey: ML_API_KEY

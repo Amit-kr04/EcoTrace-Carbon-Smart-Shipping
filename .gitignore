@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+server/.data/
+ml/.venv/
+ml/models/
+ml/data/
+__pycache__/
+.DS_Store
