@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { api } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
-import { Icon, date } from './ui.jsx';
+import { Icon, Loading, date } from './ui.jsx';
 
 const NAV = [
   ['Overview', [['/app', 'dashboard', 'Dashboard'], ['/app/shipments', 'truck', 'Shipments'], ['/app/vendors', 'factory', 'Vendors'], ['/app/locations', 'pin', 'Locations']]],
@@ -81,7 +81,7 @@ export default function Layout() {
           </div>
         </header>
         <main className="content" key={location.pathname}>
-          <Outlet />
+          <Suspense fallback={<Loading />}><Outlet /></Suspense>
         </main>
       </div>
     </div>

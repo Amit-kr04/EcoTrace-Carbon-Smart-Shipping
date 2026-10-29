@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { Alert, Company, EmissionFactor, User } from '../models/index.js';
+import { Alert, Company, EmissionFactor, MODES, User } from '../models/index.js';
 import { asyncHandler, requireRole } from '../middleware/auth.js';
 import { buildMonthlyReport } from '../services/report.js';
 import { sendMail } from '../services/mailer.js';
-import { clearFactorCache } from '../services/emissions.js';
+import { clearFactorCache, FACTOR_FIELDS, getFactors } from '../services/emissions.js';
 import { checkBudget } from '../services/alerts.js';
 import { addMonths } from '../services/ml.js';
 
@@ -48,16 +48,26 @@ router.put('/settings/company', requireRole('owner', 'admin'), asyncHandler(asyn
   res.json(company);
 }));
 
-router.get('/settings/factors', asyncHandler(async (_req, res) => {
-  res.json(await EmissionFactor.find().sort({ kgCo2PerTonneKm: 1 }).lean());
+router.get('/settings/factors', asyncHandler(async (req, res) => {
+  const factors = await getFactors(req.companyId);
+  res.json(Object.values(factors).sort((a, b) => a.kgCo2PerTonneKm - b.kgCo2PerTonneKm));
 }));
 
+// Edits are saved as this company's own row; other companies keep their factors.
 router.put('/settings/factors/:mode', requireRole('admin', 'owner'), asyncHandler(async (req, res) => {
-  const fields = ['kgCo2PerTonneKm', 'costPerTonneKm', 'minCharge', 'speedKmPerDay', 'handlingDays'];
-  const update = Object.fromEntries(fields.filter((f) => req.body[f] !== undefined).map((f) => [f, Number(req.body[f])]));
-  const f = await EmissionFactor.findOneAndUpdate({ mode: req.params.mode }, update, { new: true });
-  clearFactorCache();
-  res.json(f);
+  const { mode } = req.params;
+  if (!MODES.includes(mode)) return res.status(404).json({ message: `Unknown mode "${mode}"` });
+  const update = {};
+  for (const f of FACTOR_FIELDS.filter((f) => req.body[f] !== undefined && req.body[f] !== '')) {
+    const n = Number(req.body[f]);
+    if (!Number.isFinite(n) || n < 0 || (f === 'speedKmPerDay' && n === 0)) return res.status(400).json({ message: `${f} must be a ${f === 'speedKmPerDay' ? 'positive' : 'non-negative'} number` });
+    update[f] = n;
+  }
+  const current = (await getFactors(req.companyId))[mode];
+  const base = Object.fromEntries(['source', ...FACTOR_FIELDS].map((f) => [f, current[f]]));
+  await EmissionFactor.updateOne({ company: req.companyId, mode }, { $set: { ...base, ...update, company: req.companyId, mode } }, { upsert: true });
+  clearFactorCache(req.companyId);
+  res.json((await getFactors(req.companyId))[mode]);
 }));
 
 router.get('/team', asyncHandler(async (req, res) => {

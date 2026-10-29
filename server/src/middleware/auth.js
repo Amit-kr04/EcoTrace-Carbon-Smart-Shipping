@@ -12,7 +12,7 @@ export function verifyToken(token) {
 
 export async function requireAuth(req, res, next) {
   const header = req.headers.authorization || '';
-  const token = header.startsWith('Bearer ') ? header.slice(7) : req.query.token;
+  const token = header.startsWith('Bearer ') ? header.slice(7) : '';
   if (!token) return res.status(401).json({ message: 'Not signed in' });
   try {
     const payload = verifyToken(token);

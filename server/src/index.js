@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import express from 'express';
 import cors from 'cors';
 import { Server } from 'socket.io';
-import { config } from './config.js';
+import { config, serverRoot } from './config.js';
 import { connectDb } from './db.js';
 import { User } from './models/index.js';
 import { requireAuth, verifyToken } from './middleware/auth.js';
@@ -35,7 +35,7 @@ app.use('/api/ml', insightRoutes);
 app.use('/api', adminRoutes);
 
 // Serve the built React app when it exists (single-server deployment).
-const clientDist = path.resolve('../client/dist');
+const clientDist = path.resolve(serverRoot, '../client/dist');
 if (fs.existsSync(clientDist)) {
   app.use(express.static(clientDist));
   app.get(/^\/(?!api|socket\.io).*/, (_req, res) => res.sendFile(path.join(clientDist, 'index.html')));

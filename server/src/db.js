@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import mongoose from 'mongoose';
-import { config } from './config.js';
+import { config, serverRoot } from './config.js';
 
 let memoryServer = null;
 
@@ -20,7 +20,7 @@ export async function connectDb() {
       await mongoose.disconnect();
     }
     const { MongoMemoryServer } = await import('mongodb-memory-server');
-    const dbPath = path.resolve('.data/db');
+    const dbPath = path.join(serverRoot, '.data/db');
     fs.mkdirSync(dbPath, { recursive: true });
     memoryServer = await MongoMemoryServer.create({
       instance: { port: config.memoryDbPort, dbPath, storageEngine: 'wiredTiger' },

@@ -29,7 +29,7 @@ async function vendorReliability(companyId) {
 }
 
 async function buildOptions(companyId, dest, material, weightKg, reliability) {
-  const [sources, factors] = await Promise.all([candidateSources(companyId, dest, material), getFactors()]);
+  const [sources, factors] = await Promise.all([candidateSources(companyId, dest, material), getFactors(companyId)]);
   const b = pointOf(dest);
   const options = [];
   for (const src of sources) {
@@ -104,7 +104,7 @@ router.get('/optimize/baseline', asyncHandler(async (req, res) => {
   const from = new Date(Date.UTC(y, m - 1, 1));
   const to = new Date(Date.UTC(y, m, 1));
   const companyId = new mongoose.Types.ObjectId(String(req.companyId));
-  const [company, factors, vendors] = await Promise.all([Company.findById(companyId).lean(), getFactors(), Vendor.find({ company: companyId }).lean()]);
+  const [company, factors, vendors] = await Promise.all([Company.findById(companyId).lean(), getFactors(companyId), Vendor.find({ company: companyId }).lean()]);
   const price = Object.fromEntries(vendors.map((v) => [String(v._id), v.pricePerKg || 0]));
   const shipments = await Shipment.find({ company: companyId, shipDate: { $gte: from, $lt: to } }).lean();
 

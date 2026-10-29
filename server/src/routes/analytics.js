@@ -51,7 +51,7 @@ router.get('/supply-chain', asyncHandler(async (req, res) => {
 
 // Totals per mode for the what-if simulator.
 router.get('/mode-totals', asyncHandler(async (req, res) => {
-  const [data, factors] = await Promise.all([summary(req.companyId, range({ months: req.query.months || 12 })), getFactors()]);
+  const [data, factors] = await Promise.all([summary(req.companyId, range({ months: req.query.months || 12 })), getFactors(req.companyId)]);
   res.json({ byMode: data.byMode, totals: data.totals, factors });
 }));
 

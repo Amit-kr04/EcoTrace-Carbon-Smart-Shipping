@@ -10,25 +10,34 @@ export const DEFAULT_FACTORS = [
   { mode: 'air', kgCo2PerTonneKm: 1.13, costPerTonneKm: 28, minCharge: 3000, speedKmPerDay: 6000, handlingDays: 1, source: 'UK GHG Conversion Factors - Air freight, short-haul' },
 ];
 
-let cache = null;
+export const FACTOR_FIELDS = ['kgCo2PerTonneKm', 'costPerTonneKm', 'minCharge', 'speedKmPerDay', 'handlingDays'];
+
+const cache = new Map(); // companyId -> { mode: factor }
 
 export async function ensureFactors() {
+  // Replaces the old global unique index on `mode` with the per-company one.
+  await EmissionFactor.syncIndexes();
   for (const f of DEFAULT_FACTORS) {
-    await EmissionFactor.updateOne({ mode: f.mode }, { $setOnInsert: f }, { upsert: true });
+    await EmissionFactor.updateOne({ company: null, mode: f.mode }, { $setOnInsert: { ...f, company: null } }, { upsert: true });
   }
-  cache = null;
+  cache.clear();
 }
 
-export async function getFactors() {
-  if (!cache) {
-    const rows = await EmissionFactor.find().lean();
-    cache = Object.fromEntries((rows.length ? rows : DEFAULT_FACTORS).map((r) => [r.mode, r]));
+// Built-in defaults, overridden by the shared rows, overridden by the company's own edits.
+export async function getFactors(companyId) {
+  const key = String(companyId);
+  if (!cache.has(key)) {
+    const rows = await EmissionFactor.find({ company: { $in: [null, companyId] } }).lean();
+    const factors = Object.fromEntries(DEFAULT_FACTORS.map((f) => [f.mode, { ...f }]));
+    for (const r of rows.filter((r) => !r.company)) Object.assign(factors[r.mode], r);
+    for (const r of rows.filter((r) => r.company)) Object.assign(factors[r.mode], r);
+    cache.set(key, factors);
   }
-  return cache;
+  return cache.get(key);
 }
 
-export function clearFactorCache() {
-  cache = null;
+export function clearFactorCache(companyId) {
+  cache.delete(String(companyId));
 }
 
 // CO2 = distance x weight x emission factor

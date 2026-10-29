@@ -66,9 +66,12 @@ def load_vendors(company_id: str) -> pd.DataFrame:
     )
 
 
-def load_tariffs() -> dict:
-    """Freight tariff per mode (cost per tonne-km and minimum charge) from the emission-factor table."""
-    return {f["mode"]: f for f in _db().emissionfactors.find()}
+def load_tariffs(company_id: str) -> dict:
+    """Freight tariff per mode (cost per tonne-km and minimum charge) from the emission-factor table.
+    Rows without a company are the shared defaults; the company's own rows override them."""
+    rows = list(_db().emissionfactors.find({"company": {"$in": [None, _oid(company_id)]}}))
+    rows.sort(key=lambda f: f.get("company") is not None)
+    return {f["mode"]: f for f in rows}
 
 
 def add_time_features(df: pd.DataFrame) -> pd.DataFrame:

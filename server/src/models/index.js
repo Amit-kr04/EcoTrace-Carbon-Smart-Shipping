@@ -110,8 +110,10 @@ const shipmentSchema = new Schema(
 shipmentSchema.index({ company: 1, shipDate: -1 });
 shipmentSchema.index({ company: 1, mode: 1 });
 
+// Rows without a company are the shared defaults; a company's own row overrides them.
 const emissionFactorSchema = new Schema({
-  mode: { type: String, enum: MODES, unique: true },
+  company: { type: ObjectId, ref: 'Company', default: null },
+  mode: { type: String, enum: MODES, required: true },
   kgCo2PerTonneKm: Number,
   costPerTonneKm: Number,
   minCharge: Number,
@@ -119,6 +121,7 @@ const emissionFactorSchema = new Schema({
   handlingDays: Number,
   source: String,
 });
+emissionFactorSchema.index({ company: 1, mode: 1 }, { unique: true });
 
 const forecastSchema = new Schema(
   {

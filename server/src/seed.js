@@ -95,7 +95,7 @@ export async function seedDemo({ log = console.log } = {}) {
     return k - 1;
   };
 
-  const factors = await getFactors();
+  const factors = await getFactors(company._id);
   const distCache = new Map();
   const distances = async (from, to) => {
     const key = `${from._id}|${to._id}`;

@@ -127,7 +127,7 @@ def metrics(company_id: str):
 
 def _forecast(company_id: str, horizon: int):
     df = _shipments(company_id)
-    flagged = [a["id"] for a in anomaly.detect(df)["anomalies"]]
+    flagged = [a["id"] for a in anomaly.detect(df, company_id)["anomalies"]]
     return forecast.forecast(df, horizon, flagged)
 
 
@@ -150,7 +150,7 @@ def delay_risk(req: RiskReq):
 
 @app.post("/anomalies")
 def anomalies(req: CompanyReq):
-    return anomaly.detect(_shipments(req.company_id))
+    return anomaly.detect(_shipments(req.company_id), req.company_id)
 
 
 @app.post("/vendor-clusters")

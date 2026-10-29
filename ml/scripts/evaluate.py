@@ -14,7 +14,7 @@ company_id = sys.argv[1] if len(sys.argv) > 1 else str(_db().companies.find_one(
 df = load_shipments(company_id)
 print(f"Company {company_id}: {len(df):,} shipments\n")
 
-flags = anomaly.detect(df)
+flags = anomaly.detect(df, company_id)
 print(f"Anomaly detection (Isolation Forest): {len(flags['anomalies'])} flagged of {flags['checked']:,}")
 for a in flags["anomalies"][:5]:
     print("  -", a["reason"])

@@ -42,7 +42,7 @@ export async function buildShipment(companyId, input) {
   const distanceKm = input.distanceKm ? Number(input.distanceKm) : distances[mode];
   if (!distanceKm) throw new InputError(`${mode} is not available on this route (${originDoc.city} to ${to.city})`);
 
-  const factors = await getFactors();
+  const factors = await getFactors(companyId);
   const leg = estimateLeg(distanceKm, weightKg, factors[mode]);
   const shipDate = input.shipDate ? new Date(input.shipDate) : new Date();
   const expectedDays = input.expectedDays ? Number(input.expectedDays) : leg.days;

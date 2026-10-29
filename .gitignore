@@ -7,3 +7,4 @@ ml/models/
 ml/data/
 __pycache__/
 .DS_Store
+logs/

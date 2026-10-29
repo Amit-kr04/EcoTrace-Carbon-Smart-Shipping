@@ -15,11 +15,11 @@ def _robust_z(col: pd.Series) -> pd.Series:
     return (col - col.median()) / (mad if mad > 1e-9 else (col.std() or 1))
 
 
-def detect(shipments: pd.DataFrame, contamination: float = 0.003) -> Dict:
+def detect(shipments: pd.DataFrame, company_id: str, contamination: float = 0.003) -> Dict:
     df = shipments[~shipments["reviewed"]].copy()
     if len(df) < 50:
         return {"checked": len(df), "anomalies": [], "model": "Isolation Forest"}
-    tariffs = load_tariffs()
+    tariffs = load_tariffs(company_id)
     tkm = df["distance_km"] * df["weight_kg"] / 1000
     rate = df["mode"].map(lambda m: tariffs.get(m, {}).get("costPerTonneKm", 3))
     min_charge = df["mode"].map(lambda m: tariffs.get(m, {}).get("minCharge", 0))
