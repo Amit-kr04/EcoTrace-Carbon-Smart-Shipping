@@ -1,0 +1,2 @@
+_id,company,type,level,message,read,createdAt,updatedAt
+6ada75486b93f5d4e2889301,6ada753a412f809281041fe6,anomaly,warning,14 shipments look unusual or wrongly entered. Review them on the Insights page.,true,2026-10-22T20:42:48.503Z,2026-10-22T21:01:19.045Z

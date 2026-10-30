@@ -1,0 +1,47 @@
+{
+    "delay": {
+        "selected": "Random Forest",
+        "train_rows": 3858,
+        "test_rows": 965,
+        "late_share": 0.273,
+        "models": {
+            "baseline": {
+                "name": "Rule: road + monsoon = late",
+                "f1": 0.535,
+                "roc_auc": 0.68
+            },
+            "Random Forest": {
+                "roc_auc": 0.761,
+                "f1": 0.564,
+                "precision": 0.46,
+                "recall": 0.727,
+                "threshold": 0.47
+            },
+            "XGBoost": {
+                "roc_auc": 0.74,
+                "f1": 0.548,
+                "precision": 0.437,
+                "recall": 0.735,
+                "threshold": 0.24
+            }
+        },
+        "train_seconds": 1.26,
+        "trained_at": "2026-10-23T02:12:45"
+    },
+    "forecast": {
+        "model": {
+            "mae": 11823.8,
+            "mape": 7.97
+        },
+        "backtest_months": [
+            "2026-07",
+            "2026-08",
+            "2026-09"
+        ],
+        "naive_last_month": {
+            "mae": 18576.6,
+            "mape": 12.21
+        },
+        "beats_baseline": true
+    }
+}

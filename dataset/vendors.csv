@@ -1,0 +1,12 @@
+_id,company,name,city,coastal,lng,lat,materials,pricePerKg,monthlyCapacityKg,createdAt,updatedAt,cluster.id,cluster.label
+6ada753a412f809281041fec,6ada753a412f809281041fe6,Konkan Steel Supply,Mumbai,true,72.8777,19.076,steel,64,300000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.320Z,1,Green and Reliable
+6ada753a412f809281041fed,6ada753a412f809281041fe6,Tata Steel Distributors,Jamshedpur,false,86.2029,22.8046,steel,59,400000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.321Z,0,"Carbon-heavy and Late-prone, premium"
+6ada753a412f809281041fee,6ada753a412f809281041fe6,Ludhiana Fasteners,Ludhiana,false,75.8573,30.901,steel; fasteners,92,80000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.321Z,2,Carbon-heavy and Late-prone
+6ada753a412f809281041fef,6ada753a412f809281041fe6,Coimbatore Castings,Coimbatore,false,76.9558,11.0168,aluminium; steel,138,150000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.321Z,0,"Carbon-heavy and Late-prone, premium"
+6ada753a412f809281041ff0,6ada753a412f809281041fe6,Odisha Aluminium Works,Bhubaneswar,false,85.8245,20.2961,aluminium,205,150000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.321Z,0,"Carbon-heavy and Late-prone, premium"
+6ada753a412f809281041ff1,6ada753a412f809281041fe6,Kerala Rubber Co-op,Kochi,true,76.2673,9.9312,rubber,168,120000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.321Z,0,"Carbon-heavy and Late-prone, premium"
+6ada753a412f809281041ff2,6ada753a412f809281041fe6,Guwahati Rubber Traders,Guwahati,false,91.7362,26.1445,rubber,149,80000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.321Z,2,Carbon-heavy and Late-prone
+6ada753a412f809281041ff3,6ada753a412f809281041fe6,Gujarat Polymers,Ahmedabad,false,72.5714,23.0225,plastics,116,180000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.321Z,1,Green and Reliable
+6ada753a412f809281041ff4,6ada753a412f809281041fe6,Indore Plastic Moulders,Indore,false,75.8577,22.7196,plastics,107,120000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.321Z,1,Green and Reliable
+6ada753a412f809281041ff5,6ada753a412f809281041fe6,Surat Packaging House,Surat,true,72.8311,21.1702,packaging,38,200000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.321Z,1,Green and Reliable
+6ada753a412f809281041ff6,6ada753a412f809281041fe6,Chennai Electro Parts,Chennai,true,80.2707,13.0827,electronics,860,30000,2026-10-22T20:42:34.230Z,2026-10-29T13:58:20.321Z,3,Carbon-heavy and Reliable

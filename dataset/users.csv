@@ -1,0 +1,4 @@
+_id,name,email,role,company,createdAt,updatedAt
+6ada753a412f809281041fe8,Priya Deshmukh,owner@ecotrace.demo,owner,6ada753a412f809281041fe6,2026-10-22T20:42:34.226Z,2026-10-22T20:42:34.226Z
+6ada753a412f809281041fe9,Arjun Nair,manager@ecotrace.demo,manager,6ada753a412f809281041fe6,2026-10-22T20:42:34.226Z,2026-10-22T20:42:34.226Z
+6ada753a412f809281041fea,Sana Qureshi,admin@ecotrace.demo,admin,6ada753a412f809281041fe6,2026-10-22T20:42:34.226Z,2026-10-22T20:42:34.226Z
